@@ -20,7 +20,7 @@ apply plugin: 'de.dfki.mary.voicebuilding.marytts-kaldi-mfa'
 import de.undercouch.gradle.tasks.download.Download
 
 task downloadMausTextGrid(type: Download) {
-    src 'https://github.com/insa-k/voice-cmu-rms-maus-data/releases/download/MAUS-TextGrids/TextGrid.zip'
+    src 'https://github.com/insa-k/voice-cmu-slt-maus-data/releases/download/MAUS-TextGrids/TextGrid.zip'
     dest "$buildDir/TextGrid.zip"
     overwrite false
     onlyIfNewer true
