@@ -1,9 +1,7 @@
 buildscript {
     repositories {
         mavenLocal()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        jcenter()
     }
     dependencies {
         classpath "de.dfki.mary:gradle-marytts-kaldi-mfa-plugin:0.2.0-SNAPSHOT"
@@ -51,6 +49,10 @@ convertTextGridToXLab {
             'R'   : 'r',
             'u:'  : 'u',
             'aI'  : 'AI',
-            'eI'  : 'EI']
+            'eI'  : 'EI',
+            'l='  : 'l',
+            'h\\' : 'h',
+            '6'   : 'r=',
+            '4'   : 'r',
+            '?'   : '_']
 }
-
