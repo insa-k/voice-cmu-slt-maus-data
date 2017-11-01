@@ -1,0 +1,56 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "de.dfki.mary:gradle-marytts-kaldi-mfa-plugin:0.2.0-SNAPSHOT"
+    }
+}
+
+group 'de.dfki.mary'
+version '5.3-SNAPSHOT'
+
+apply plugin:'base'
+
+apply plugin: 'de.dfki.mary.voicebuilding.marytts-kaldi-mfa'
+
+import de.undercouch.gradle.tasks.download.Download
+
+task downloadMausTextGrid(type: Download) {
+    src 'https://github.com/insa-k/voice-cmu-rms-maus-data/releases/download/MAUS-TextGrids/TextGrid.zip'
+    dest "$buildDir/TextGrid.zip"
+    overwrite false
+    onlyIfNewer true
+}
+
+task unpackTextGrid(type: Copy) {
+    from zipTree("$buildDir/TextGrid.zip"), {
+        include '**/TextGrid/*.TextGrid'
+        eachFile {
+            it.path = it.name
+        }
+    }
+    into "$buildDir/TextGrid"
+    includeEmptyDirs = false
+    dependsOn downloadMausTextGrid
+}
+
+convertTextGridToXLab {
+    dependsOn unpackTextGrid
+    convertTextGridToXLab.tgDir = file("$buildDir/TextGrid")
+    convertTextGridToXLab.tiername = "MAU"
+    convertTextGridToXLab.labelMapping = [
+            '<p:>': '_',
+            'i:'  : 'i',
+            'O:'  : 'O',
+            '3`'  : 'r=',
+            'Q'   : 'A',
+            'R'   : 'r',
+            'u:'  : 'u',
+            'aI'  : 'AI',
+            'eI'  : 'EI']
+}
+
